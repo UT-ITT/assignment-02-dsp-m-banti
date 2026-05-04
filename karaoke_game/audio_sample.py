@@ -55,7 +55,6 @@ stream = sd.InputStream(
     latency='low'
 )
 
-
 # continously capture and plot audio signal
 with stream:
     print("\nStreaming... (Ctrl+C to stop)")
