@@ -3,7 +3,6 @@ numpy
 pyaudio
 pynput
 pyglet
-portaudio
 sounddevice
 pyqtgraph
 mido
