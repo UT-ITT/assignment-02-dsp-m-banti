@@ -5,8 +5,8 @@ import numpy as np
 import sounddevice as sd
 
 # import font
-font.add_file('./assets/Play-Regular.tff')
-play_reg = font.load('Play Reg')
+font.add_file('./assets/Play-Regular.ttf')
+play_reg = font.load('Play')
 
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
@@ -65,7 +65,7 @@ resource.reindex()
 win = pyglet.window.Window(WINDOW_WIDTH, WINDOW_HEIGHT, caption="Marinaoke")
 
 # loading text label
-pitch_label = pyglet.text.Label('waiting for audio...', font_name='Play Reg', font_size=20, x=win.width//2, y=win.height//2, anchor_x='center', anchor_y='center')
+pitch_label = pyglet.text.Label('waiting for audio...', font_name='Play', font_size=20, x=win.width//2, y=win.height//2, anchor_x='center', anchor_y='center')
 
 
 # functions as collection to draw a batch
@@ -75,7 +75,7 @@ current_score = 0
 
 score_label = pyglet.text.Label(
     text=f"score: {current_score}",
-    font_name = 'Play Reg',
+    font_name = 'Play',
     font_size = 15,
     x=790, y=560,
     anchor_x='right',
@@ -111,9 +111,7 @@ def on_draw():
 with stream:
     pyglet.clock.schedule_interval(update, 1/60.0)
 
-pyglet.app.run()
-
-
+    pyglet.app.run()
 
 # get background asset
 # bg_image = resource.image("background.png")
