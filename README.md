@@ -9,3 +9,7 @@
 ### Font
 Play-Regular.ttf: https://fonts.google.com/specimen/Play
 ### Images
+- Star: https://www.nicepng.com/ourpic/u2w7a9y3q8e6i1e6_related-wallpapers-super-mario-star-pixel/
+- Background: https://screamingbrainstudios.itch.io/seamless-space-backgrounds
+- Planets: https://opengameart.org/content/colorful-planets
+- Rocket: https://www.vecteezy.com/vector-art/6470692-rocket-startup-pixel-art-business-icon
