@@ -98,6 +98,13 @@ def update(dt):
 @win.event
 def on_draw():
     win.clear()
+
+    # test
+    if current_pitch > 0:
+        pitch_label.text = f"Frequency: {current_pitch:.1f} Hz"
+    else:
+        pitch_label.text = "Silence..."
+
     pitch_label.draw()
     score_label.draw()
 
