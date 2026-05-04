@@ -28,7 +28,7 @@ input_device = int(input("\nSelect input device: "))
 app = pg.mkQApp("Audio Visualizer")
 
 win = pg.GraphicsLayoutWidget(title="Live Audio")
-plot = win.addPlot()
+plot = win.addPlot() # type: ignore
 plot.setYRange(-1, 1)
 
 curve = plot.plot(pen='w')
