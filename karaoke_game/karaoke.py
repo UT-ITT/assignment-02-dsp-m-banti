@@ -56,7 +56,7 @@ for i in range(2):
 
 # player setup
 player = pyglet.sprite.Sprite(img=player_img, x=150, y=WINDOW_HEIGHT//2, batch=main_batch)
-player.scale = 0.075
+player.scale = 0.1
 
 current_score = 0
 game_over = False
@@ -71,7 +71,7 @@ spawn_x = win.width
 for i in range(20):
     note_y = random.randint(100, win.height - 100)
     note = pyglet.sprite.Sprite(img=note_img, x=spawn_x, y=note_y, batch=main_batch)
-    note.scale = 0.1
+    note.scale = 0.25
     # ensure note can be only collected once
     note.is_collected = False # type: ignore 
     notes.append(note)
@@ -85,7 +85,7 @@ for i in range(20):
     # selection of random planet image
     random_planet = random.choice(planets_img)
     obs = pyglet.sprite.Sprite(img=random_planet, x=spawn_x + 200, y=obs_y, batch=main_batch)
-    obs.scale = 0.8
+    obs.scale = 2
     obstacles.append(obs)
     # space between note and obstacle
     spawn_x += 400
@@ -159,7 +159,7 @@ def hz_to_y(frequency, win_height):
     # formula for converting hz to note
     note_value = 12 * np.log2(frequency / 440.0) + 69
     # range for voice
-    min_note, max_note = 45, 65
+    min_note, max_note = 25, 85
     percentage = (note_value - min_note) / (max_note - min_note)
     return max(0, min(win_height, int(percentage * win_height)))
 
@@ -209,10 +209,19 @@ def update(dt):
     # -1 for overlapping to seamless looping
     bg_sprites[1].x = bg_sprites[0].x + win.width - 1
         
+    # player collision
+    # high number = small collision radius
+    margin = 15
+
+    p_left = player.x - (player.width // 2) + margin
+    p_right = player.x + (player.width // 2) - margin
+    p_bottom = player.y - (player.height // 2) + margin
+    p_top = player.y + (player.height // 2) - margin
+
     # collecting notes
     for note in notes:
         # flying speed
-        note.x -= 150 * dt 
+        note.x -= 50 * dt 
 
         # collision
         if not note.is_collected:
