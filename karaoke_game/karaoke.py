@@ -65,11 +65,11 @@ notes = []
 obstacles = []
 
 # game-play setup
-spawn_x = 800
+spawn_x = win.width
 
 # generation of and notes
 for i in range(20):
-    note_y = random.randint(100, 500)
+    note_y = random.randint(100, win.height - 100)
     note = pyglet.sprite.Sprite(img=note_img, x=spawn_x, y=note_y, batch=main_batch)
     note.scale = 0.1
     # ensure note can be only collected once
@@ -77,10 +77,10 @@ for i in range(20):
     notes.append(note)
 
     # generation of obstacles
-    obs_y = random.randint(100, 500)
+    obs_y = random.randint(100, win.height - 100)
     # ensures obstacle sare not being spawned upon notes
     while abs(obs_y - note_y) < 100: 
-            obs_y = random.randint(100, 500)
+            obs_y = random.randint(100, win.height - 100)
 
     # selection of random planet image
     random_planet = random.choice(planets_img)
@@ -154,11 +154,12 @@ stream = sd.InputStream(
 # convert pitch into y-coordinate
 def hz_to_y(frequency, win_height):
     # hold position or go down for no/low pitch
-    if frequency <80: return player.y 
-    # formular for converting hz to note
+    if frequency <80: 
+        return player.y 
+    # formula for converting hz to note
     note_value = 12 * np.log2(frequency / 440.0) + 69
     # range for voice
-    min_note, max_note = 40, 80
+    min_note, max_note = 45, 65
     percentage = (note_value - min_note) / (max_note - min_note)
     return max(0, min(win_height, int(percentage * win_height)))
 
@@ -188,7 +189,7 @@ def update(dt):
     if game_over:
         return
     # player movement
-    target_y = hz_to_y(current_pitch, WINDOW_HEIGHT)
+    target_y = hz_to_y(current_pitch, win.height)
     if current_pitch > 80:
         # movement to target pitch
         player.y += (target_y - player.y) * 0.1 
@@ -196,7 +197,7 @@ def update(dt):
         # set gravity effect during silence
         player.y -= 200 * dt
     # keeps player in window
-    player.y = max(0, min(WINDOW_HEIGHT, player.y))
+    player.y = max(0, min(win.height, player.y))
 
     # loops background
     # move first sprite
