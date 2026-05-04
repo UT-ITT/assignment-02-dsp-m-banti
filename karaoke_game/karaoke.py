@@ -15,7 +15,7 @@ play_reg = font.load('Play')
 
 resource.path = ['./assets']
 resource.reindex()
-win = pyglet.window.Window(WINDOW_WIDTH, WINDOW_HEIGHT, caption='Marinaoke')
+win = pyglet.window.Window(WINDOW_WIDTH, WINDOW_HEIGHT, caption='Captain-Marinaoke')
 
 main_batch = pyglet.graphics.Batch()
 bg_batch = pyglet.graphics.Batch()
@@ -39,8 +39,7 @@ if os.path.exists(planets_dir):
             planets_img.append(img)
             
 if not planets_img:
-    print("FEHLER: Keine Planeten-Bilder im Ordner 'assets/planets' gefunden!")
-    # Das Spiel würde abstürzen, wenn die Liste leer ist.
+    print("Error: No images found in folder 'assets/planets' !")
 
 player_img.anchor_x = player_img.width//2
 player_img.anchor_y = player_img.height//2
@@ -49,11 +48,15 @@ player_img.anchor_y = player_img.height//2
 bg_sprites = []
 for i in range(2):
     sprite = pyglet.sprite.Sprite(img=bg_img, x=i*WINDOW_WIDTH, y=0, batch=bg_batch)
+    # scale background to window
+    sprite.scale_x = win.width / bg_img.width
+    sprite.scale_y = win.height / bg_img.height
+    
     bg_sprites.append(sprite)
 
 # player setup
 player = pyglet.sprite.Sprite(img=player_img, x=150, y=WINDOW_HEIGHT//2, batch=main_batch)
-player.scale = 0.5
+player.scale = 0.075
 
 current_score = 0
 game_over = False
@@ -68,7 +71,7 @@ spawn_x = 800
 for i in range(20):
     note_y = random.randint(100, 500)
     note = pyglet.sprite.Sprite(img=note_img, x=spawn_x, y=note_y, batch=main_batch)
-    note.scale = 0.5
+    note.scale = 0.1
     # ensure note can be only collected once
     note.is_collected = False # type: ignore 
     notes.append(note)
@@ -82,7 +85,7 @@ for i in range(20):
     # selection of random planet image
     random_planet = random.choice(planets_img)
     obs = pyglet.sprite.Sprite(img=random_planet, x=spawn_x + 200, y=obs_y, batch=main_batch)
-    obs.scale = 0.5
+    obs.scale = 0.8
     obstacles.append(obs)
     # space between note and obstacle
     spawn_x += 400
@@ -196,10 +199,14 @@ def update(dt):
     player.y = max(0, min(WINDOW_HEIGHT, player.y))
 
     # loops background
-    for bg in bg_sprites:
-        bg.x -= 50 * dt
-        if bg.x <= -WINDOW_WIDTH:
-            bg.x += WINDOW_WIDTH * 2
+    # move first sprite
+    bg_sprites[0].x -= 50 * dt
+    # reset sprite right
+    if bg_sprites[0].x <= -win.width:
+        bg_sprites[0].x += win.width
+    # stick second background to first
+    # -1 for overlapping to seamless looping
+    bg_sprites[1].x = bg_sprites[0].x + win.width - 1
         
     # collecting notes
     for note in notes:
